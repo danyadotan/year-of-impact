@@ -1,0 +1,507 @@
+https://sites.google.com/view/our-social-impact
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>מתנדבות יחד | כיכר המדינה והצפון הישן</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Rubik', sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+  </style>
+</head>
+<body id="appBody" class="min-h-screen pb-24 bg-slate-900 text-slate-100">
+
+  <!-- Top Header -->
+  <header id="appHeader" class="bg-gradient-to-r from-blue-900 to-slate-900 text-white pt-6 pb-10 px-4 rounded-b-[2.5rem] shadow-lg relative border-b border-slate-800">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-2xl font-bold">
+            💙
+          </div>
+          <div>
+            <span class="text-xs bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full font-medium">כיכר המדינה והצפון הישן</span>
+            <h1 id="mainTitle" class="text-xl font-bold tracking-tight mt-0.5">מתנדבות יחד • בת מצווה</h1>
+          </div>
+        </div>
+        
+        <!-- Settings & View Mode Toggle -->
+        <div class="flex items-center gap-2">
+          <button onclick="toggleSettings()" class="bg-slate-800/80 hover:bg-slate-700 text-slate-200 p-2.5 rounded-2xl text-sm border border-slate-700 transition flex items-center gap-1.5">
+            <span>⚙️ הגדרות</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Settings Dropdown Panel (Hidden by default) -->
+      <div id="settingsPanel" class="hidden bg-slate-800/95 border border-slate-700 rounded-2xl p-4 mb-4 text-xs space-y-3">
+        <div class="font-bold text-slate-200">הגדרות תצוגה ומסך:</div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="setTheme('dark')" class="bg-slate-900 hover:bg-blue-900 px-3 py-1.5 rounded-xl border border-slate-700">🌙 מצב כהה (שקט)</button>
+          <button onclick="setTheme('warm')" class="bg-amber-950/40 hover:bg-amber-900/60 px-3 py-1.5 rounded-xl border border-amber-900/50">☕ מצב חם/רך</button>
+          <button onclick="setTheme('light')" class="bg-slate-100 text-slate-900 hover:bg-white px-3 py-1.5 rounded-xl border border-slate-300">☀️ מצב בהיר</button>
+        </div>
+      </div>
+
+      <!-- Compact Greeting -->
+      <p class="text-slate-300 text-xs sm:text-sm">בוחרים יחד עשייה משמעותית קל"ב במרחק הליכה ברגל מכיכר המדינה 🌳</p>
+    </div>
+  </header>
+
+  <!-- TAB 0: COMPACT COLLAPSIBLE TAB AGENT (TAB) -->
+  <section class="max-w-4xl mx-auto px-4 -mt-4 relative z-10 mb-6">
+    <div id="agentCard" class="bg-slate-800/95 border border-slate-700 rounded-2xl p-4 shadow-xl backdrop-blur-md">
+      <!-- Collapsed Header View -->
+      <div id="agentHeaderView" class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xl">✨</span>
+          <div>
+            <span class="text-xs font-bold text-blue-400">סוכן היוזמות (TAB):</span>
+            <span class="text-xs text-slate-300"> רוצה רעיון מהיר לפעילות? בחר דוגמה או פתח את הסוכן:</span>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="openAgentWithBlueprint('bake')" class="bg-blue-600/30 hover:bg-blue-600/55 text-blue-200 px-3 py-1.5 rounded-xl text-xs font-medium border border-blue-500/30 transition">
+            🧁 יריד אפייה בפארק כיכר המדינה
+          </button>
+          <button onclick="openAgentWithBlueprint('hospital')" class="bg-purple-600/30 hover:bg-purple-600/55 text-purple-200 px-3 py-1.5 rounded-xl text-xs font-medium border border-purple-500/30 transition">
+            🏥 ערכות קסם לדנה-איכילוב
+          </button>
+          <button onclick="toggleAgentExpanded()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+            פתח הכל ▾
+          </button>
+        </div>
+      </div>
+
+      <!-- Expanded Agent Content (Hidden by default) -->
+      <div id="agentExpandedContent" class="hidden mt-4 pt-4 border-t border-slate-700 space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-sm text-slate-200">מחולל מתכוני עשייה חכמים לקבוצה</h3>
+          <button onclick="toggleAgentExpanded()" class="text-xs text-blue-400 hover:underline">🔼 כווץ סוכן חזרה</button>
+        </div>
+        <div class="flex flex-wrap gap-2" id="blueprintSelector"></div>
+        <div id="blueprintContainer" class="bg-slate-900/60 rounded-xl p-4 border border-slate-700/60 text-xs"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Navigation Bar & Quick Stats -->
+  <section class="max-w-4xl mx-auto px-4 mb-6">
+    <div class="bg-slate-800/80 border border-slate-700 rounded-3xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('catalog')" id="nav-catalog" class="px-4 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white transition">🧭 מאגר התנדבויות</button>
+        <button onclick="switchTab('hub')" id="nav-hub" class="px-4 py-2 rounded-2xl text-xs font-bold bg-slate-700 text-slate-300 transition">📋 חדר פיקוד והתפקדות</button>
+        <button onclick="filterFavorites()" id="nav-favs" class="px-4 py-2 rounded-2xl text-xs font-bold bg-slate-700 text-slate-300 transition">❤️ הנבחרים (<span id="favCountBadge">0</span>)</button>
+      </div>
+      <div class="text-xs text-slate-400">
+        👧 נרשמו עד כה: <span id="totalSignedCount" class="font-bold text-blue-400">1</span> משתתפות
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="max-w-4xl mx-auto px-4">
+
+    <!-- TAB 1: ACTIVITY CATALOG -->
+    <section id="tab-catalog">
+      
+      <!-- Search & Toggle Filters -->
+      <div class="mb-4 space-y-3">
+        <div class="relative">
+          <input id="searchInput" type="text" oninput="renderActivities()"
+            placeholder="חיפוש חופשי: איכילוב, חיות, אפייה, קטיף, דנה..."
+            class="w-full py-3 pr-10 pl-4 rounded-2xl text-slate-100 bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500 text-xs sm:text-sm" />
+          <span class="absolute right-3.5 top-3.5 text-slate-400">🔍</span>
+        </div>
+
+        <!-- Toggle for Advanced Filters -->
+        <details class="bg-slate-800/60 border border-slate-700 rounded-2xl p-3 text-xs">
+          <summary class="font-bold text-slate-300 cursor-pointer select-none">🎛️ פילטרים מתקדמים וסינון לפי מאמץ ▾</summary>
+          <div class="flex flex-wrap gap-2 mt-3 pt-3 border-t border-slate-700">
+            <button onclick="setFilter('all')" id="filter-all" class="filter-btn bg-blue-600 text-white px-3 py-1.5 rounded-full font-medium transition">הכל (13)</button>
+            <button onclick="setFilter('walking')" id="filter-walking" class="filter-btn bg-slate-700 text-slate-300 px-3 py-1.5 rounded-full font-medium transition">🚶‍♀️ מרחק הליכה מכיכר המדינה</button>
+            <button onclick="setFilter('ongoing')" id="filter-ongoing" class="filter-btn bg-slate-700 text-slate-300 px-3 py-1.5 rounded-full font-medium transition">🔄 התנדבות מתמשכת</button>
+            <button onclick="setFilter('onetime')" id="filter-onetime" class="filter-btn bg-slate-700 text-slate-300 px-3 py-1.5 rounded-full font-medium transition">⚡ חד-פעמי / חותם</button>
+            <button onclick="setFilter('light')" id="filter-light" class="filter-btn bg-slate-700 text-slate-300 px-3 py-1.5 rounded-full font-medium transition">🟢 מאמץ קל</button>
+            <button onclick="setFilter('moderate')" id="filter-moderate" class="filter-btn bg-slate-700 text-slate-300 px-3 py-1.5 rounded-full font-medium transition">🟡 מאמץ בינוני</button>
+          </div>
+        </details>
+      </div>
+
+      <!-- Activities Grid -->
+      <div id="activitiesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- TAB 2: GROUP HUB & ROSTER -->
+    <section id="tab-hub" class="hidden space-y-6">
+      
+      <!-- Registration Form Toggle -->
+      <div class="bg-slate-800 border border-slate-700 rounded-3xl p-5">
+        <h2 class="text-base font-bold text-slate-200 mb-2">📋 טופס התפקדות משתתפות חדשות</h2>
+        <p class="text-xs text-slate-400 mb-4">השלימו את שם הבת כדי להוסיף אותה מיד לרשימת הקבוצה המתגלגלת:</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <input id="newGirlName" type="text" placeholder="שם הילדה (למשל: מאיה)" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none" />
+          <input id="newParentContact" type="text" placeholder="שם הורה טלפון (אופציונלי)" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none" />
+          <button onclick="addNewGirlFromInput()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-xl text-xs transition">
+            + הוסף בת לרשימה
+          </button>
+        </div>
+      </div>
+
+      <!-- Roster Table with Toggle details -->
+      <div class="bg-slate-800 border border-slate-700 rounded-3xl p-5">
+        <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-700">
+          <div>
+            <h3 class="font-bold text-slate-200 text-sm">רשימת הבנות שהתפקדו עד כה</h3>
+            <p class="text-xs text-slate-400">מתעדכן אוטומטית בזמן אמת</p>
+          </div>
+          <button onclick="shareRosterWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition">
+            📲 העתק/שתף רשימה לוואטסאפ
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-right text-xs">
+            <thead>
+              <tr class="border-b border-slate-700 text-slate-400">
+                <th class="py-2.5 px-2">#</th>
+                <th class="py-2.5 px-2">שם הבת</th>
+                <th class="py-2.5 px-2">סטטוס התפקדות</th>
+                <th class="py-2.5 px-2">מלווה ברגל 🚶‍♀️</th>
+                <th class="py-2.5 px-2">מקומות ברכב 🚗</th>
+                <th class="py-2.5 px-2">פעולות</th>
+              </tr>
+            </thead>
+            <tbody id="rosterTableBody" class="divide-y divide-slate-700/50"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    let favorites = JSON.parse(localStorage.getItem('bm_favs') || '[]');
+    let currentFilter = 'all';
+    let agentExpanded = false;
+    let activeTheme = 'dark';
+
+    let roster = JSON.parse(localStorage.getItem('bm_roster_tlv') || 'null') || [
+      { id: 1, name: 'אלכס', approved: true, chaperone: true, seats: 4 }
+    ];
+
+    const activities = [
+      {
+        id: 1,
+        title: 'ערכות קסם ויצירה לילדים מאושפזים בבי"ח "דנה-דואק"',
+        org: 'איכילוב (רח׳ ויצמן) • 10 דק׳ הליכה מכיכר המדינה',
+        type: 'onetime',
+        typeLabel: '⚡ חד-פעמי',
+        intensity: 'light',
+        intensityLabel: '🟢 מאמץ קל',
+        walkingDistance: true,
+        description: 'הכנת ערכות הפגת שעמום אישיות, חוברות חידונים וצמידי חברות למחלקות הילדים בדנה-איכילוב.',
+        logistics: 'ללא צורך ברכבים או הסעות. מתקיים בבית בשכונה או בספרייה.'
+      },
+      {
+        id: 2,
+        title: 'יריד מאפים ודוחון מתוקים בפארק כיכר המדינה',
+        org: 'פארק כיכר המדינה / שער בית הספר בשכונה',
+        type: 'onetime',
+        typeLabel: '⚡ יזמות קבוצתית',
+        intensity: 'moderate',
+        intensityLabel: '🟡 מאמץ בינוני',
+        walkingDistance: true,
+        description: 'אחה"צ של אפייה משותפת בבתים בשכונה והקמת דוכן מכירה בשישי בבוקר, כשכל הרווחים תרומה לעמותה.',
+        logistics: 'דורש 2–3 בתים מארחים באזור כיכר המדינה.'
+      },
+      {
+        id: 3,
+        title: 'חונכות קריאה ומשחק "אחיות גדולות"',
+        org: 'ספריית בית אריאלה / מרכז קהילתי אריק איינשטיין',
+        type: 'ongoing',
+        typeLabel: '🔄 התנדבות מתמשכת',
+        intensity: 'light',
+        intensityLabel: '🟢 מאמץ קל',
+        walkingDistance: true,
+        description: 'זוגות בנות נפגשות אחת לשבוע לקריאה משותפת ועזרה לילדי כיתות א׳–ב׳ בשכונה.',
+        logistics: 'הליכה קצרה מכיכר המדינה. ללא הסעות.'
+      },
+      {
+        id: 4,
+        title: 'סיירת "דוג-ווקינג" קל"ב לקשישים ומילואימניקים',
+        org: 'רחובות הצפון הישן וגינות הכלבים בכיכר המדינה',
+        type: 'ongoing',
+        typeLabel: '🔄 התנדבות מתמשכת',
+        intensity: 'moderate',
+        intensityLabel: '🟡 מאמץ בינוני',
+        walkingDistance: true,
+        description: 'טיול קבוע של 20 דקות עם כלבים של שכנים מבוגרים או משפחות מילואים באזור.',
+        logistics: 'מתבצע ברגל בתוך השכונה בלבד.'
+      },
+      {
+        id: 5,
+        title: 'גשר בין-דורי במועדון גמלאים / פאלאס ת"א',
+        org: 'רח׳ ויצמן (סמוך לאיכילוב)',
+        type: 'ongoing',
+        typeLabel: '🔄 התנדבות מתמשכת',
+        intensity: 'light',
+        intensityLabel: '🟢 מאמץ קל',
+        walkingDistance: true,
+        description: 'הדרכת סמארטפונים, משחקי קופסה ושיחות אישיות עם דיירי הדיור המוגן או מועדון היום.',
+        logistics: 'הליכה קצרה ברגל מכיכר המדינה.'
+      },
+      {
+        id: 6,
+        title: 'פרויקט "משאירות חותם" בחצר בית הספר',
+        org: 'בית הספר היסודי בצפון הישן',
+        type: 'onetime',
+        typeLabel: '⚡ השארת חותם',
+        intensity: 'moderate',
+        intensityLabel: '🟡 מאמץ בינוני',
+        walkingDistance: true,
+        description: 'ציור קיר מעצים, צביעת משחקי רצפה וקלאס או חידוש פינת ישיבה בחצר.',
+        logistics: 'תיאום מול הנהלת בית הספר.'
+      },
+      {
+        id: 7,
+        title: 'התנדבות בכלביית תל אביב העירונית',
+        org: 'רח׳ ש"י עגנון / מעבר לירקון',
+        type: 'ongoing',
+        typeLabel: '🔄 קבוע / חד-פעמי',
+        intensity: 'moderate',
+        intensityLabel: '🟡 מאמץ בינוני',
+        walkingDistance: false,
+        description: 'סוציאליזציה לחתולים וגורים וטיול עם כלבים במתחם המגודר.',
+        logistics: 'דורש 2–3 הורים מלווים והסעות קצרות.'
+      },
+      {
+        id: 8,
+        title: 'ניקיון חופים ושמירה על הים',
+        org: 'חוף מציצים / הילטון (תל אביב)',
+        type: 'onetime',
+        typeLabel: '⚡ חד-פעמי',
+        intensity: 'moderate',
+        intensityLabel: '🟡 מאמץ בינוני',
+        walkingDistance: false,
+        description: 'מבצע ניקיון חוף הים בליווי הדרכה אקולוגית על צמצום פלסטיק.',
+        logistics: 'הגעה קצרה לחוף הים.'
+      }
+    ];
+
+    const blueprints = [
+      {
+        id: 'bake',
+        title: '🧁 יריד מאפים קהילתי בפארק כיכר המדינה',
+        duration: 'שעתיים אפייה + שעתיים מכירה',
+        equipment: ['קמח, סוכר, שוקולד צ׳יפס ותבניות', 'שקיות צלופן וסרטי קישוט', 'שלטי מחיר וקופת תרומות'],
+        whatsappText: 'היי כולם! 🧁 בנות כיתה ו׳ מקיימות יריד מאפים מתוקים בכיכר המדינה! כל ההכנסות קודש לתרומה לעמותה. בואו לפרגן!'
+      },
+      {
+        id: 'hospital',
+        title: '🏥 ערכות קסם ויצירה לדנה-איכילוב',
+        duration: 'שעתיים (אחה"צ ביתי קל"ב)',
+        equipment: ['חוברות צביעה וחידונים שהבנות יכינו', 'ערכות חרוזים וצמידי חברות', 'ברכות החלמה אישיות'],
+        whatsappText: 'היי! השבוע נכין ערכות הפגת שעמום מדהימות לילדים המאושפזים בבי"ח דנה-איכילוב הממוקם ממש לידנו.'
+      }
+    ];
+
+    function switchTab(tab) {
+      ['catalog', 'hub'].forEach(t => {
+        document.getElementById('tab-' + t).classList.add('hidden');
+        const btn = document.getElementById('nav-' + t);
+        if (btn) btn.className = 'px-4 py-2 rounded-2xl text-xs font-bold bg-slate-700 text-slate-300 transition';
+      });
+      document.getElementById('tab-' + tab).classList.remove('hidden');
+      const activeBtn = document.getElementById('nav-' + tab);
+      if (activeBtn) activeBtn.className = 'px-4 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white transition';
+      if (tab === 'hub') renderRoster();
+    }
+
+    function filterFavorites() {
+      switchTab('catalog');
+      currentFilter = 'favorites';
+      renderActivities();
+    }
+
+    function setFilter(f) {
+      currentFilter = f;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.className = 'filter-btn bg-slate-700 text-slate-300 px-3 py-1.5 rounded-full font-medium transition';
+      });
+      document.getElementById('filter-' + f).className = 'filter-btn bg-blue-600 text-white px-3 py-1.5 rounded-full font-medium transition';
+      renderActivities();
+    }
+
+    function toggleFavorite(id) {
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(i => i !== id);
+      } else {
+        favorites.push(id);
+      }
+      localStorage.setItem('bm_favs', JSON.stringify(favorites));
+      document.getElementById('favCountBadge').innerText = favorites.length;
+      renderActivities();
+    }
+
+    function toggleAgentExpanded() {
+      agentExpanded = !agentExpanded;
+      const content = document.getElementById('agentExpandedContent');
+      if (agentExpanded) {
+        content.classList.remove('hidden');
+        openAgentWithBlueprint('bake');
+      } else {
+        content.classList.add('hidden');
+      }
+    }
+
+    function openAgentWithBlueprint(bpId) {
+      agentExpanded = true;
+      document.getElementById('agentExpandedContent').classList.remove('hidden');
+      const bp = blueprints.find(b => b.id === bpId);
+      const container = document.getElementById('blueprintContainer');
+      const selector = document.getElementById('blueprintSelector');
+
+      selector.innerHTML = blueprints.map(b => `
+        <button onclick="openAgentWithBlueprint('${b.id}')" class="px-3 py-1 rounded-xl text-xs font-bold ${b.id === bpId ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-300 border border-slate-700'}">
+          ${b.title}
+        </button>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="font-bold text-slate-200 mb-1">${bp.title}</div>
+        <div class="text-slate-400 mb-2">⏱️ ${bp.duration}</div>
+        <div class="font-semibold text-slate-300 mb-1">ציוד נדרש:</div>
+        <ul class="list-disc list-inside text-slate-400 mb-3 space-y-0.5">
+          ${bp.equipment.map(e => `<li>${e}</li>`).join('')}
+        </ul>
+        <div class="bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+          <div class="text-emerald-400 font-bold mb-1">💬 נוסח לוואטסאפ:</div>
+          <div class="text-slate-300">${bp.whatsappText}</div>
+        </div>
+      `;
+    }
+
+    function setTheme(theme) {
+      activeTheme = theme;
+      const body = document.getElementById('appBody');
+      const header = document.getElementById('appHeader');
+      if (theme === 'dark') {
+        body.className = 'min-h-screen pb-24 bg-slate-900 text-slate-100';
+        header.className = 'bg-gradient-to-r from-blue-900 to-slate-900 text-white pt-6 pb-10 px-4 rounded-b-[2.5rem] shadow-lg relative border-b border-slate-800';
+      } else if (theme === 'warm') {
+        body.className = 'min-h-screen pb-24 bg-[#1f1a17] text-[#f5ebd9]';
+        header.className = 'bg-gradient-to-r from-[#3d2c22] to-[#1f1a17] text-[#f5ebd9] pt-6 pb-10 px-4 rounded-b-[2.5rem] shadow-lg relative border-b border-[#4d3a2d]';
+      } else {
+        body.className = 'min-h-screen pb-24 bg-slate-100 text-slate-900';
+        header.className = 'bg-gradient-to-r from-blue-600 to-blue-800 text-white pt-6 pb-10 px-4 rounded-b-[2.5rem] shadow-lg relative';
+      }
+      document.getElementById('settingsPanel').classList.add('hidden');
+    }
+
+    function toggleSettings() {
+      document.getElementById('settingsPanel').classList.toggle('hidden');
+    }
+
+    function renderActivities() {
+      const query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+      const grid = document.getElementById('activitiesGrid');
+      document.getElementById('favCountBadge').innerText = favorites.length;
+
+      const filtered = activities.filter(act => {
+        const matchesSearch = !query || act.title.toLowerCase().includes(query) || act.description.toLowerCase().includes(query);
+        if (!matchesSearch) return false;
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'favorites') return favorites.includes(act.id);
+        if (currentFilter === 'walking') return act.walkingDistance;
+        if (currentFilter === 'ongoing' || currentFilter === 'onetime') return act.type === currentFilter;
+        if (currentFilter === 'light' || currentFilter === 'moderate') return act.intensity === currentFilter;
+        return true;
+      });
+
+      grid.innerHTML = filtered.map(act => {
+        const isFav = favorites.includes(act.id);
+        return `
+          <div class="bg-slate-800/90 border border-slate-700/80 rounded-3xl p-4 flex flex-col justify-between shadow-md">
+            <div>
+              <div class="flex justify-between items-start gap-2 mb-2">
+                <div class="flex flex-wrap gap-1">
+                  <span class="text-[10px] font-semibold bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full">${act.typeLabel}</span>
+                  <span class="text-[10px] font-semibold bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">${act.intensityLabel}</span>
+                  ${act.walkingDistance ? '<span class="text-[10px] font-semibold bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded-full">🚶‍♀️ קל"ב ברגל</span>' : ''}
+                </div>
+                <button onclick="toggleFavorite(${act.id})" class="text-lg">${isFav ? '❤️' : '🤍'}</button>
+              </div>
+              <h3 class="text-sm font-bold text-slate-100 mb-1">${act.title}</h3>
+              <p class="text-[11px] text-blue-400 mb-2">📍 ${act.org}</p>
+            </div>
+
+            <details class="mt-2 pt-2 border-t border-slate-700/60 text-xs">
+              <summary class="text-blue-300 font-medium cursor-pointer select-none">לפרטים מלאים ולוגיסטיקה ▾</summary>
+              <p class="mt-2 text-slate-300 leading-relaxed">${act.description}</p>
+              <p class="mt-1 text-slate-400 text-[11px]">🚗 ${act.logistics}</p>
+            </details>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addNewGirlFromInput() {
+      const nameInput = document.getElementById('newGirlName');
+      const name = nameInput.value.trim();
+      if (!name) return;
+      roster.push({ id: roster.length + 1, name, approved: true, chaperone: false, seats: 0 });
+      nameInput.value = '';
+      localStorage.setItem('bm_roster_tlv', JSON.stringify(roster));
+      renderRoster();
+    }
+
+    function updateRoster(idx, field, val) {
+      roster[idx][field] = val;
+      localStorage.setItem('bm_roster_tlv', JSON.stringify(roster));
+      renderRoster();
+    }
+
+    function removeRoster(idx) {
+      roster.splice(idx, 1);
+      localStorage.setItem('bm_roster_tlv', JSON.stringify(roster));
+      renderRoster();
+    }
+
+    function renderRoster() {
+      document.getElementById('totalSignedCount').innerText = roster.length;
+      const tbody = document.getElementById('rosterTableBody');
+      tbody.innerHTML = roster.map((r, idx) => `
+        <tr>
+          <td class="py-2 px-2 text-slate-500">${idx + 1}</td>
+          <td class="py-2 px-2 font-bold text-slate-200">${r.name}</td>
+          <td class="py-2 px-2">✓ התפקדה</td>
+          <td class="py-2 px-2"><input type="checkbox" ${r.chaperone ? 'checked' : ''} onchange="updateRoster(${idx}, 'chaperone', this.checked)" /></td>
+          <td class="py-2 px-2"><input type="number" value="${r.seats}" min="0" max="6" onchange="updateRoster(${idx}, 'seats', parseInt(this.value)||0)" class="w-12 bg-slate-900 text-center rounded border border-slate-700" /></td>
+          <td class="py-2 px-2"><button onclick="removeRoster(${idx})" class="text-rose-400 hover:underline">מחק</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function shareRosterWhatsApp() {
+      let text = `📋 *רשימת התפקדות – קבוצת בת המצווה*\n\n`;
+      roster.forEach((r, idx) => {
+        text += `${idx + 1}. *${r.name}* ${r.chaperone ? '(מלווה 🚶‍♀️)' : ''}\n`;
+      });
+      text += `\nסך הכל נרשמו: ${roster.length} משתתפות! 🎉`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    renderActivities();
+    renderRoster();
+  </script>
+</body>
+</html>
